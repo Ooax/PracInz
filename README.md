@@ -7,6 +7,7 @@ wykładowcami a studentami na WFAiIS
 
 Aby uruchomić projekt należy pobrać a następnie otworzyć folder w którym umieszczone są 'sprzezenie-zwrotne-backend' oraz 'sprzezenie-zwrotne-frontend'.
 Następnie przechodzimy do jednego z folderów i z poziomu konsoli, przy użyciu 'npm' uruchamiamy:
+
 'npm install' w celu zainstalowania pakietów potrzebnych w projektach
 
 a następnie odpowiednio:

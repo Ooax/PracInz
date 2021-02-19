@@ -6,17 +6,20 @@ wykładowcami a studentami na WFAiIS
 
 
 Aby uruchomić projekt należy pobrać a następnie otworzyć folder w którym umieszczone są 'sprzezenie-zwrotne-backend' oraz 'sprzezenie-zwrotne-frontend'.
-Następnie przechodzimy do jednego z folderów i z poziomu konsoli, przy użyciu 'npm' uruchamiamy odpowiednio komendami:
+Następnie przechodzimy do jednego z folderów i z poziomu konsoli, przy użyciu 'npm' uruchamiamy:
+'npm install' w celu zainstalowania pakietów potrzebnych w projektach
+
+a następnie odpowiednio:
 
 'sprzezenie-zwrotne-backend':
 'npm test' - aby uruchomić testy jednostkowe
-'npm start' - aby uruchomić projekt w opcji developerskiej
-'node app.js' - aby uruchomić projekt
+lub 'npm start' - aby uruchomić projekt w opcji developerskiej
+lub 'node app.js' - aby uruchomić projekt
 
 
 'sprzezenie-zwrotne-frontend':
 'npm start' - aby uruchomić projekt w opcji developerskiej
-'npm run build' - budowanie projektu na produkcję
+lub 'npm run build' - budowanie projektu na produkcję
 
 Do działania projektów potrzebne jest posiadanie bazy danych w MongoDB.
 

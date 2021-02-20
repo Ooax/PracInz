@@ -168,7 +168,7 @@ export default class NewSurvey extends React.Component {
                         classType: this.props.data.class_type_id,
                         termId: this.props.data.term_id
                     },
-                    lecturer: this.props.data.lecturer,
+                    // lecturer: this.props.data.lecturer,
                     surveyId: this.surveyTemplates[this.state.selectedTemplate]._id,
                     isOpen: this.state.isOpen,
                     openDate: this.state.openDate,

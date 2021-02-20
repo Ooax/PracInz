@@ -102,7 +102,7 @@ export class SurveysTable extends React.Component {
                         {courseInfo.courseId}
                     </TableCell>
                     <TableCell>{courseInfo.courseName["pl"] + " " + courseInfo.termId + " [" + courseInfo.classType + "] "}</TableCell>
-                    <TableCell>{lecturer.firstName + " " + lecturer.lastName}</TableCell>
+                    <TableCell>{lecturer.first_name + " " + lecturer.last_name}</TableCell>
                     <TableCell>
 
                         <Tooltip title="Wypełnij ankietę">
@@ -165,8 +165,8 @@ export class StaffSurveysTable extends React.Component {
                     <TableCell component="th" scope="row">
                         {courseInfo.courseId}
                     </TableCell>
-                    <TableCell>{courseInfo.courseName["pl"] + " " + courseInfo.termId + " [" + courseInfo.classType + "] "}</TableCell>
-                    <TableCell>{lecturer.firstName + " " + lecturer.lastName}</TableCell>
+                    <TableCell>{courseInfo.courseName["pl"] + " " + courseInfo.termId}</TableCell>
+                    <TableCell>{" [" + courseInfo.classType + "] "}</TableCell>
                     <TableCell>
                             {
                                 ((this.props.buttons)
@@ -225,7 +225,7 @@ export class StaffSurveysTable extends React.Component {
                             <TableRow>
                                 <TableCell>Kod</TableCell>
                                 <TableCell>Przedmiot</TableCell>
-                                <TableCell>Prowadzący</TableCell>
+                                <TableCell>Rodzaj zajęć</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

@@ -33,7 +33,7 @@ export default class SurveySettings extends React.Component {
         this.openDateChange = this.openDateChange.bind(this);
         this.closeDateChange = this.closeDateChange.bind(this);
         this.updateButtonClick = this.updateButtonClick.bind(this);
-        this.updateSurveyData = this.updateSurveyData.bind(this);
+        this.updateMySurveyData = this.updateMySurveyData.bind(this);
     }
 
     
@@ -73,11 +73,11 @@ export default class SurveySettings extends React.Component {
     }
 
     updateButtonClick(){
-        this.updateSurveyData();
+        this.updateMySurveyData();
     }
 
-    updateSurveyData = async function () {
-        await fetch('/surveys/updateSurveyData', {
+    updateMySurveyData = async function () {
+        await fetch('/surveys/updateMySurveyData', {
             method: 'POST',
             credentials: 'same-origin',
             headers: {

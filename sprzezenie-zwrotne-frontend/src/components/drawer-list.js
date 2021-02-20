@@ -49,7 +49,7 @@ export default class DrawerList extends React.Component {
                     </ListItemIcon>
                 </ListItem>
                 {
-                    (this.props.data.staff_status === 2) ?
+                    (this.props.data.student_status === 2) ?
                         (<ListItem button key="drawer_item_availableSurveys" onClick={(event) => { this.onChosen(event, "GetSurveys", "Surveys") }} >
                             <ListItemText primary="Dostępne ankiety" />
                         </ListItem>) :
@@ -83,7 +83,7 @@ export default class DrawerList extends React.Component {
                     </ListItemIcon>
                 </ListItem>
                 {
-                    (this.props.data.staff_status === 2)?
+                    (this.props.data.student_status === 2)?
                     (<ListItem button key="drawer_item_usosAvailableSurveys" onClick = {(event) => { this.onChosen(event, "GetUSOSSurveys", "SurveysUSOS")}}>
                         <ListItemText primary="Ankiety zajęć" />
                     </ListItem>):

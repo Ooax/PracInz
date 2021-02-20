@@ -133,7 +133,7 @@ export default class SurveyStatistics extends React.Component {
                     <Box>
                         <Typography variant="h5" display="inline">
                                 {this.props.data.courseInfo.courseId + " - " + this.props.data.courseInfo.courseName["pl"] + " [" + this.props.data.courseInfo.classType + "] " +
-                                this.props.data.courseInfo.termId + " - " + this.props.data.lecturer.firstName + " " + this.props.data.lecturer.lastName}
+                                this.props.data.courseInfo.termId}
                         </Typography>
                     </Box>
                 </Box>

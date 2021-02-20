@@ -309,7 +309,8 @@ export class SurveyComponent extends React.Component {
                 courseInfo: {
                     courseUnitId: this.props.data.courseInfo.courseUnitId,
                     courseId: this.props.data.courseInfo.courseId,
-                    termId: this.props.data.courseInfo.termId
+                    termId: this.props.data.courseInfo.termId,
+                    lecturer: this.props.data.lecturer
                 },
                 answers: this.state.answers,
                 surveyComment: this.state.surveyComment

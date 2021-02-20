@@ -58,7 +58,6 @@ const sessionParams = {
     rolling: true,
     cookie: {
         maxAge: SESSION_LIFETIME,
-        sameSite: true,
     }
 }
 
@@ -127,16 +126,10 @@ app.get('/callback', async function(req, res){
                 console.error("Error while getting session data", err);
             }
             if (session) {
+                console.log(oauthCallbackToken);
+                console.log(session.oauth);
                 req.session.token.key = session.oauth.oauth_token;
                 req.session.token.secret = session.oauth.oauth_token_secret;
-                req.sessionStore.destroy(ret[0]._id, function (err) {
-                    if(err)
-                        console.error(err);
-                })
-                req.sessionStore.set(req.sessionID, req.session, function (err) {
-                    if(err)
-                        console.error(err);
-                })
             }
         }).then(function () {
 
@@ -164,24 +157,13 @@ app.get('/logout', async function(req, res){
         return;
     }
     await login.logout(req.session.token);
-    const client = await MongoClient.connect(mongoInfo.url, {useUnifiedTopology: true});
-    await mongoQuery.findQuery(client, mongoInfo, 'sessions', {session: new RegExp('"token":{"key":"' + req.session.token.key + '"')})
-    .then(function(ret){
-        if(ret.length > 0){
-            req.sessionStore.destroy(ret[0]._id, function (err) {
-                if(err)
-                    console.error(err);
-                else{
-                    res.json({message: "Logged out"});
-                }
-            })
-        }
-        else{
-            res.json({message: "No session available"});
+    req.sessionStore.destroy(req.sessionID, function (err) {
+        if (err)
+            console.error(err);
+        else {
+            res.json({ message: "Logged out" });
         }
     })
-    client.close();
-    
 });
 
 //Posrednik, ktory bedzie sprawdzal czy uzytkownik jest zalogowany
@@ -190,7 +172,6 @@ function isLoggedIn(req, res, next){
         next();
     }
     else{
-        // res.redirect('/login');
         res.status(403);
         res.send('Not logged in')
     }

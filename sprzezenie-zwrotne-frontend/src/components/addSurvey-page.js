@@ -24,7 +24,6 @@ export default class AddSurveyPage extends React.Component {
     }
 
     handleCourseToSurveyCallback= async function(courseChosen){
-        console.log(courseChosen);
         this.setState({courseChosen: courseChosen});
     }
 

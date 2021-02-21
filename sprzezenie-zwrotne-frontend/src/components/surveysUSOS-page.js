@@ -78,7 +78,6 @@ export default class SurveysUSOSPage extends React.Component {
         surveyData.course_info.classtype_id = this.state.availableSurveysData.find((element) => element.id === this.state.surveyToGet).course_info.classtype_id;
         this.surveyData = surveyData;
         this.setState({surveysLoaded: false, surveyLoaded: true});
-        console.log(this.surveyData);
         return surveyData;
     }
 

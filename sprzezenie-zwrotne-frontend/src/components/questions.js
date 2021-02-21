@@ -194,7 +194,6 @@ export class SurveyComponent extends React.Component {
     }
 
     componentDidMount() {
-        
     }
 
     onCommentChange(value){
@@ -207,7 +206,6 @@ export class SurveyComponent extends React.Component {
         this.setState({answers: answers});
         if((this.state.answers.findIndex((element) => element == null)) === -1)
             this.setState({submitAvailable: true});
-        console.log(this.state.answers);
     }
 
     handleCheckboxChange(value, questionId, id){
@@ -335,7 +333,7 @@ export class SurveyComponent extends React.Component {
                 <Box mb={2}>
                     <Typography variant="h6">
                             {this.props.data.courseInfo.courseId + " - " + this.props.data.courseInfo.courseName["pl"] + " [" + this.props.data.courseInfo.classType + "] " +
-                             this.props.data.courseInfo.termId + " - " + this.props.data.lecturer.firstName + " " + this.props.data.lecturer.lastName}
+                             this.props.data.courseInfo.termId + " - " + this.props.data.lecturer.first_name + " " + this.props.data.lecturer.last_name}
                     </Typography>
                 </Box>
                 <Box mb={2}>

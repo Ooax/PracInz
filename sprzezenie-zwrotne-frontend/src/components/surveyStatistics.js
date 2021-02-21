@@ -10,6 +10,10 @@ import { SurveyCommentsTable } from './tables.js';
 export default class SurveyStatistics extends React.Component {
     constructor(props) {
         super(props);
+        this.state={
+            surveyData: null,
+            loaded: false
+        }
         
         
 
@@ -17,12 +21,13 @@ export default class SurveyStatistics extends React.Component {
         this.returnButton = this.returnButton.bind(this);
         this.renderHorizontalBars = this.renderHorizontalBars.bind(this);
         this.renderCommentsTable = this.renderCommentsTable.bind(this);
+        this.getMySurveyData = this.getMySurveyData.bind(this);
     }
 
     organizeDataToView(){
         this.questions = [];
         this.comments = [];
-        this.props.data.questions.forEach((question, questionIndex) => {
+        this.state.surveyData.questions.forEach((question, questionIndex) => {
             var questionData = {
                 questionText: question.text,
                 questionType: question.questionType,
@@ -43,25 +48,26 @@ export default class SurveyStatistics extends React.Component {
                 questionData.questionStats.datasets[0].label = "Odpowiedzi jednokrotnego wyboru";
                 question.answers.forEach((questionAnswer, answerIndex) => {
                     questionData.questionStats.labels.push(questionAnswer.text);
-                    questionData.questionStats.datasets[0].data.push(this.props.data.surveyAnswers.filter((surveyAnswer) => surveyAnswer.answers[questionIndex] === questionAnswer.id).length);
+                    questionData.questionStats.datasets[0].data.push(this.state.surveyData.surveyAnswers.filter((surveyAnswer) => surveyAnswer.answers[questionIndex] === questionAnswer.id).length);
                 })
             }
             else if(questionData.questionType === "Checkbox"){
                 questionData.questionStats.datasets[0].label = "Odpowiedzi wielokrotnego wyboru";
                 question.answers.forEach((questionAnswer, answerIndex) => {
                     questionData.questionStats.labels.push(questionAnswer.text);
-                    questionData.questionStats.datasets[0].data.push(this.props.data.surveyAnswers.filter((surveyAnswer) => surveyAnswer.answers[questionIndex][answerIndex] === true).length);
+                    questionData.questionStats.datasets[0].data.push(this.state.surveyData.surveyAnswers.filter((surveyAnswer) => surveyAnswer.answers[questionIndex][answerIndex] === true).length);
                 })
             }
             this.questions.push(questionData);
         })
-        this.props.data.surveyAnswers.forEach((answer) => {
+        this.state.surveyData.surveyAnswers.forEach((answer) => {
             if(answer.surveyComment && answer.surveyComment !== "")
                 this.comments.push(answer.surveyComment);
         })
     }
 
     componentDidMount(){
+        this.getMySurveyData();
     }
 
     returnButton(){
@@ -69,7 +75,7 @@ export default class SurveyStatistics extends React.Component {
     }
 
     renderHorizontalBars(){
-        if((this.props.data.surveyAnswers)?(this.props.data.surveyAnswers.length > 0):false)
+        if((this.state.surveyData.surveyAnswers)?(this.state.surveyData.surveyAnswers.length > 0):false)
         {
             return this.questions.map((question, index) => {
                 return(
@@ -91,14 +97,14 @@ export default class SurveyStatistics extends React.Component {
     }
 
     renderCommentsTable(){
-        if((this.props.data.surveyAnswers)?(this.props.data.surveyAnswers.length > 0 && this.comments.length > 0):false){
+        if((this.state.surveyData.surveyAnswers)?(this.state.surveyData.surveyAnswers.length > 0 && this.comments.length > 0):false){
             return(
                 <Box>
                     <SurveyCommentsTable data={this.comments} />
                 </Box>
             )
         } 
-        else if((this.props.data.surveyAnswers)?(this.props.data.surveyAnswers.length > 0 && this.comments.length === 0):false){
+        else if((this.state.surveyData.surveyAnswers)?(this.state.surveyData.surveyAnswers.length > 0 && this.comments.length === 0):false){
             return(
                 <Box mt={5} color={lightBlue[600]}>
                     <Typography variant="h5" >
@@ -115,9 +121,28 @@ export default class SurveyStatistics extends React.Component {
         }
     }
 
-    render() {
+    getMySurveyData = async function(){
+        const response = await fetch('/surveys/getMySurveyData', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({_id: this.props.data})
+        });
+        const surveyData = await response.json();
+        if(!surveyData)
+            return;
+        this.state.surveyData = surveyData;
         this.organizeDataToView();
+        this.setState({isOpen: surveyData.isOpen, loaded: true});
+    }
+
+
+    render() {
         return (
+            (!this.state.loaded)?
+            <div>Loading...</div>:
             <Box>
                 <Box display="flex" alignItems="center" mb={2}>
                     <Box>
@@ -132,8 +157,8 @@ export default class SurveyStatistics extends React.Component {
                     </Box>
                     <Box>
                         <Typography variant="h5" display="inline">
-                                {this.props.data.courseInfo.courseId + " - " + this.props.data.courseInfo.courseName["pl"] + " [" + this.props.data.courseInfo.classType + "] " +
-                                this.props.data.courseInfo.termId}
+                                {this.state.surveyData.courseInfo.courseId + " - " + this.state.surveyData.courseInfo.courseName["pl"] + " [" + this.state.surveyData.courseInfo.classType + "] " +
+                                this.state.surveyData.courseInfo.termId}
                         </Typography>
                     </Box>
                 </Box>

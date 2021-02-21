@@ -21,7 +21,6 @@ export default class ManageSurveysPage extends React.Component {
         this.handleSurveyStatisticsCallback = this.handleSurveyStatisticsCallback.bind(this);
         this.handleSurveySettingsCallback = this.handleSurveySettingsCallback.bind(this);
         this.getMySurveys = this.getMySurveys.bind(this);
-        this.getMySurveyData = this.getMySurveyData.bind(this);
     }
 
     componentDidMount(){
@@ -31,10 +30,10 @@ export default class ManageSurveysPage extends React.Component {
     handleSurveyToGetCallback = async function(surveyChosen, button) {
         await this.setState({surveyChosen: surveyChosen._id, actionOnSurvey: button});
         if(button === "statistics"){
-            await this.getMySurveyData();
+            this.setState({surveysLoaded: false, surveyDataLoaded: true});
         }
         else if(button === "settings"){
-            await this.getMySurveyData();
+            this.setState({surveysLoaded: false, surveyDataLoaded: true});
         }
     }
 
@@ -65,21 +64,6 @@ export default class ManageSurveysPage extends React.Component {
             this.setState({surveysLoaded: true, surveyLoaded: false});
     }
 
-    getMySurveyData = async function(){
-        const response = await fetch('/surveys/getMySurveyData', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({_id: this.state.surveyChosen})
-        });
-        const surveyData = await response.json();
-        if(!surveyData)
-            return;
-        this.surveyData = surveyData;
-        this.setState({surveysLoaded: false, surveyDataLoaded: true});
-    }
 
 
 
@@ -119,7 +103,7 @@ export default class ManageSurveysPage extends React.Component {
                                 ?
                                 (
                                     <Box>
-                                        <SurveyStatistics data={this.surveyData} parentCallback={this.handleSurveyStatisticsCallback} />
+                                        <SurveyStatistics data={this.state.surveyChosen} parentCallback={this.handleSurveyStatisticsCallback} />
                                     </Box>
                                 )
                                 :
@@ -142,7 +126,7 @@ export default class ManageSurveysPage extends React.Component {
                                 ?
                                 (
                                     <Box>
-                                        <SurveySettings data={this.surveyData} parentCallback={this.handleSurveySettingsCallback} />
+                                        <SurveySettings data={this.state.surveyChosen} parentCallback={this.handleSurveySettingsCallback} />
                                     </Box>
                                 )
                                 :

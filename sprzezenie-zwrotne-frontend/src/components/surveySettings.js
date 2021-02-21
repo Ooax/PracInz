@@ -21,9 +21,11 @@ export default class SurveySettings extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isOpen: this.props.data.isOpen,
+            isOpen: false,
             openDate: null,
             closeDate: null,
+            loaded: false,
+            surveyData: null
         }
         
 
@@ -34,23 +36,24 @@ export default class SurveySettings extends React.Component {
         this.closeDateChange = this.closeDateChange.bind(this);
         this.updateButtonClick = this.updateButtonClick.bind(this);
         this.updateMySurveyData = this.updateMySurveyData.bind(this);
+        this.getMySurveyData = this.getMySurveyData.bind(this);
     }
 
     
 
     textFieldDates(){
-        if(this.props.data.openDate)
+        if(this.state.surveyData.openDate)
             this.setState({
-                openDate: getCorrectDateFormat(this.props.data.openDate)
+                openDate: getCorrectDateFormat(this.state.surveyData.openDate)
             })
-        if(this.props.data.closeDate)
+        if(this.state.surveyData.closeDate)
             this.setState({
-                closeDate: getCorrectDateFormat(this.props.data.closeDate)
+                closeDate: getCorrectDateFormat(this.state.surveyData.closeDate)
             })
     }
 
     componentDidMount(){
-        this.textFieldDates();
+        this.getMySurveyData();
     }
 
     returnButton(){
@@ -84,7 +87,7 @@ export default class SurveySettings extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ 
-                _id: this.props.data._id,
+                _id: this.state.surveyData._id,
                 isOpen: this.state.isOpen,
                 openDate: this.state.openDate,
                 closeDate: this.state.closeDate
@@ -93,8 +96,28 @@ export default class SurveySettings extends React.Component {
     }
 
 
+    getMySurveyData = async function(){
+        const response = await fetch('/surveys/getMySurveyData', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({_id: this.props.data})
+        });
+        const surveyData = await response.json();
+        if(!surveyData)
+            return;
+        this.state.surveyData = surveyData;
+        this.textFieldDates();
+        this.setState({isOpen: surveyData.isOpen, loaded: true});
+    }
+
+
     render() {
         return (
+            (!this.state.loaded)?
+            <div>Loading...</div>:
             <Box>
                 <Box display="flex" alignItems="center" mb={4}>
                     <Box>
@@ -109,8 +132,8 @@ export default class SurveySettings extends React.Component {
                     </Box>
                     <Box>
                         <Typography variant="h5" display="inline">
-                                {this.props.data.courseInfo.courseId + " - " + this.props.data.courseInfo.courseName["pl"] + " [" + this.props.data.courseInfo.classType + "] " +
-                                this.props.data.courseInfo.termId + " - " + this.props.data.lecturer.firstName + " " + this.props.data.lecturer.lastName}
+                                {this.state.surveyData.courseInfo.courseId + " - " + this.state.surveyData.courseInfo.courseName["pl"] + " [" + this.state.surveyData.courseInfo.classType + "] " +
+                                this.state.surveyData.courseInfo.termId}
                         </Typography>
                     </Box>
                 </Box>
